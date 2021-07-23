@@ -45,19 +45,48 @@ function resetCalculator(){
 }
 
 function calcResult(){
+    calcData.displayNumber = calcDisplay.textContent
     result = operate(calcData.operator, parseFloat(calcData.operandOne), parseFloat(calcData.displayNumber));
-    result = Math.round((result + Number.EPSILON) * 10000) / 10000
-    console.log(result)
-    if (result.length > 11){
+    result = Math.round((result + Number.EPSILON) * 100) / 100
+    resetCalculator();
+    calcData.displayNumber = result
+    if (result.toString().length > 11){
         result = result.toExponential(2)
     }
-    resetCalculator();
-    calcData.displayNumber = result.toString();
     calcDisplay.textContent = result.toString();
 }
 
+function checkForDot(){
+    if (calcData.displayNumber != "" && calcData.displayNumber.includes(".") == false){
+        calcData.displayNumber = calcData.displayNumber + ".";
+        calcDisplay.textContent = calcData.displayNumber 
+    }
+}
+
+function operateEqualButton(){
+    if (calcData.operator == "/" && parseInt(calcData.displayNumber) == 0){
+        resetCalculator();
+        calcDisplay.textContent = "Error";
+    }
+    if (calcData.operandOne != "" && calcData.operator != ""){
+        calcResult();
+    }
+}
+
+function deleteNumber(){
+    let displayString = calcData.displayNumber.split("");
+    displayString.splice(displayString.length - 1, 1);
+    displayString = displayString.join("");
+    calcData.displayNumber = displayString;
+    calcDisplay.textContent = displayString;
+}
+
+
 numberPad.forEach((number) => {
     number.addEventListener('click', () => {
+        if(calcData.displayNumber == "0"){
+            
+        }
         if (calcData.displayNumber.length < 11){
             calcData.displayNumber = calcData.displayNumber + String(number.textContent);
             calcDisplay.textContent = calcData.displayNumber;
@@ -65,22 +94,6 @@ numberPad.forEach((number) => {
     });
 });
 
-clearButton.addEventListener('click', resetCalculator);
-
-delButton.addEventListener('click', () => {
-    let displayString = calcData.displayNumber.split("");
-    displayString.splice(displayString.length - 1, 1);
-    displayString = displayString.join("");
-    calcData.displayNumber = displayString;
-    calcDisplay.textContent = displayString;
-})
-
-dotButton.addEventListener('click', () => {
-    if (calcData.displayNumber != "" && calcData.displayNumber.includes(".") == false){
-        calcData.displayNumber = calcData.displayNumber + ".";
-        calcDisplay.textContent = calcData.displayNumber 
-    };
-})
 
 operatorButtons.forEach((button) => {
     button.addEventListener('click', () => {
@@ -89,7 +102,7 @@ operatorButtons.forEach((button) => {
         }else{
             calcData.operandOne = calcData.displayNumber
         }
-        if (calcData.operator == ""){
+        if (calcData.operator == "" && calcDisplay.textContent != ""){
             calcData.operator = button.textContent;
             calcOperatorDisplay.textContent = calcData.displayNumber + ' ' + calcData.operator;
             calcData.displayNumber = "";
@@ -104,12 +117,10 @@ operatorButtons.forEach((button) => {
     })
 })
 
-equalButton.addEventListener('click', () => {
-    if (calcData.operator == "/" && parseInt(calcData.displayNumber) == 0){
-        resetCalculator();
-        calcDisplay.textContent = "Error";
-    }
-    if (calcData.operandOne != "" && calcData.operator != ""){
-        calcResult();
-    }
-})
+equalButton.addEventListener('click', operateEqualButton);
+
+dotButton.addEventListener('click', checkForDot);
+
+clearButton.addEventListener('click', resetCalculator);
+
+delButton.addEventListener('click', deleteNumber);
