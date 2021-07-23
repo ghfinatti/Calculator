@@ -70,6 +70,7 @@ function operateEqualButton(){
     }
     if (calcData.operandOne != "" && calcData.operator != ""){
         calcResult();
+        calcData.displayNumber = "";
     }
 }
 
@@ -113,6 +114,10 @@ operatorButtons.forEach((button) => {
         }
         if (calcData.operator != "" && calcData.operandTwo != ""){
             calcResult();
+            calcData.operator = button.textContent;
+            calcData.operandOne = calcDisplay.textContent;
+            calcOperatorDisplay.textContent = calcData.displayNumber + ' ' + calcData.operator;
+            calcData.displayNumber = "";
         }
     })
 })
@@ -124,3 +129,5 @@ dotButton.addEventListener('click', checkForDot);
 clearButton.addEventListener('click', resetCalculator);
 
 delButton.addEventListener('click', deleteNumber);
+
+

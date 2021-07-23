@@ -66,6 +66,7 @@ body{
 
 .numberButton{
     background-color: rgb(255, 220, 220);
+    font-size: 14px;
 }
 
 .numberButton:hover{
@@ -74,6 +75,7 @@ body{
 
 .operators, .specialbutton{
     background-color: rgb(236, 220, 255);
+    font-size: 14px;
 }
 
 .operators:hover, .specialbutton:hover{
@@ -82,11 +84,17 @@ body{
 
 button, button:active, button:focus{
     border:none;
-    background:#fff;
     padding:0;
     margin:0;
     outline:none;
-  }
+}
+
+#githubimg{
+    width: 50px;
+    height: 50px;
+    padding-top:5px;
+    padding-right:2px;
+}
 
 #clear{
     grid-column: 1;
